@@ -1,0 +1,71 @@
+---
+mysql_install_client: true
+mysql_install_server: true
+mysql_root_password: 'AnsibleCheck'
+mysql_user: 'mysql'
+mysql_group: 'mysql'
+mysql_enable: true
+mysql_service_state: 'running'
+# because Ansible require pymysql to use mysql* modules 
+mysql_manage_pip: true
+mysql_pip_pkg_name:
+  FreeBSD: 'py37-pip'
+mysql_setuptools_pkg_name:
+  FreeBSD: 'py37-setuptools'
+mysql_virtualenv_pkg_name:
+  FreeBSD: 'py37-setuptools'
+mysql_pip_executable:
+  FreeBSD: 'pip'
+mysql_pymysql_pkg_name:
+  FreeBSD: 'pymysql'
+mysql_version: 
+  FreeBSD: '57'
+mysql_server_pkg_name: 
+  FreeBSD: "mysql{{ mysql_version[ansible_distribution] }}-server"
+mysql_client_pkg_name: 
+  FreeBSD: "mysql{{ mysql_version[ansible_distribution] }}-client"
+mysql_config_dir: 
+  FreeBSD: '/usr/local/etc/mysql/'
+mysql_config_file: "{{ mysql_config_dir[ansible_distribution] }}/my.cnf"
+mysql_service_name: 
+  FreeBSD: 'mysql-server'
+mysql_datadir: 
+  FreeBSD: '/var/db/mysql'
+mysql_port: 3306
+mysql_basedir:
+  FreeBSD: '/usr/local'
+mysql_tmpdir:
+  FreeBSD: '/var/db/mysql_tmpdir'
+mysql_config:
+  mysqld:
+#    net_retry_count: 32
+mysql_def_config:
+  mysqld:
+    bind-address: '127.0.0.1'
+    user: "{{ mysql_user }}"
+    port: "{{ mysql_port }}"
+    socket: '/tmp/mysql.sock'
+    basedir: "{{ mysql_basedir[ansible_distribution] }}"
+    datadir: "{{ mysql_datadir[ansible_distribution] }}"
+    tmpdir: "{{ mysql_tmpdir[ansible_distribution] }}"
+    enforce-gtid-consistency: 1
+    gtid-mode: 'ON'
+    safe-user-create: 1
+    lower_case_table_names: 1
+    myisam-recover-options: 'BACKUP,FORCE'
+    open_files_limit: 2048
+    table_open_cache: 16384
+    table_definition_cache: 8192
+    net_retry_count: 64
+    key_buffer_size: '8M'
+    max_allowed_packet: '4M'
+    query_cache_type: 0
+    query_cache_size: '0'
+    innodb_buffer_pool_size: '128M'
+    innodb_data_home_dir: "{{ mysql_datadir[ansible_distribution] }}"
+    innodb_log_group_home_dir: "{{ mysql_datadir[ansible_distribution] }}"
+    innodb_data_file_path: 'ibdata1:128M:autoextend'
+    innodb_temp_data_file_path: 'ibtmp1:128M:autoextend'
+    innodb_flush_method: 'O_DIRECT'
+    innodb_log_file_size: '256M'
+    innodb_log_buffer_size: '16M'

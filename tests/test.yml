@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  roles:
+    - role: ../../mysql
+      vars:
+        mysql_root_password: 'MyBigP@ss'
+        mysql_config:
+          mysqld:
+            enforce-gtid-consistency: 0
+            gtid-mode: 'OFF'

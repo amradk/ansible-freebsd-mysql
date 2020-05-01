@@ -1,0 +1,26 @@
+---
+# tasks file for mysql
+- name: Gather OS Specific Variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_distribution }}.yml"
+
+- name: check Prerequisites
+  include_tasks: "prerequisites.yml"
+
+- name: install MySQL server package
+  include_tasks: "install.yml"
+
+- name: configure MySQL server
+  include_tasks: config.yml
+
+- name: start MySQL server
+  include_tasks: "service.yml"
+
+- name: " Wait for MySQL service."
+  wait_for:
+    port: 3306
+    timeout: 30
+
+- name: set MySQL root password
+  include_tasks: "{{ ansible_distribution }}/set_root_pass.yml"

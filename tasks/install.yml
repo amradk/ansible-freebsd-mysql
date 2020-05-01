@@ -1,0 +1,27 @@
+---
+# install mysql packages
+- name: install mysql server package {{ mysql_server_pkg_name[ansible_distribution] }}
+  pkgng:
+    name: "{{ mysql_server_pkg_name[ansible_distribution] }}"
+    state: present
+  when: mysql_install_server|bool == true
+
+- name: install mysql client package {{ mysql_client_pkg_name[ansible_distribution] }}
+  pkgng:
+    name: "{{ mysql_client_pkg_name[ansible_distribution] }}"
+    state: present
+  when: mysql_install_client|bool == true
+
+- name: manage datadir
+  file:
+    path: "{{ mysql_datadir[ansible_distribution] }}"
+    owner: "{{ mysql_user }}"
+    group: "{{ mysql_group }}"
+    mode: "754"
+
+- name: manage tmpdir
+  file:
+    path: "{{ mysql_tmpdir[ansible_distribution] }}"
+    owner: "{{ mysql_user }}"
+    group: "{{ mysql_group }}"
+    mode: "754"

@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: bootstrap pkg tool
+      raw: /usr/sbin/pkg -N
+
+    - name: install python
+      raw: /usr/sbin/pkg install -y python37

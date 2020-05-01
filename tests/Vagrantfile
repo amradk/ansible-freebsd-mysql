@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+vms = [
+  {:v_name => 'fbsd', :v_mem => 1024, :v_cpu => 2},
+]
+@ansible_home = "/home/vagrant/.ansible"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "freebsd/FreeBSD-12.1-STABLE"
+  config.vm.box_version = "2020.04.02"
+  config.ssh.shell = "sh"
+  config.vm.boot_timeout = 420
+
+  vms.each do |i|
+    config.vm.define i[:v_name] do |machine|
+      machine.vm.provider "virtualbox" do |vbox|
+        vbox.memory = i[:v_mem]
+        vbox.name = i[:v_name]
+      end
+
+      machine.vm.hostname = i[:v_name]
+    end
+
+    #config.vm.synced_folder "../", "#{@ansible_home}/roles/mysql", type: 'rsync'
+    # The working ansible directory created by ansible_local is owned by root
+    #config.vm.provision "shell", inline: "chown vagrant:vagrant #{@ansible_home}"
+
+    config.vm.provision :ansible do |ansible|
+        ansible.raw_arguments = ["--connection=paramiko"]
+        ansible.playbook = "fbsd-bootstrap.yaml"
+        ansible.limit = "all"
+    end
+
+    config.vm.provision :ansible do |ansible|
+        ansible.extra_vars = { ansible_python_interpreter:"/usr/local/bin/python3.7" }
+        ansible.playbook = "test.yml"
+        ansible.limit = "all"
+    end
+  end
+end

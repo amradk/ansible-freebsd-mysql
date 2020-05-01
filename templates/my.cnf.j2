@@ -1,0 +1,6 @@
+{% for section in mysql_result_config %}
+[{{ section }}]
+{% for k,v in mysql_result_config[section].items() %}
+{{ k }}={{ v }}
+{% endfor %}
+{% endfor %}

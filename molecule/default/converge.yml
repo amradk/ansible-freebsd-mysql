@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-freebsd-mysql"
+      include_role:
+        name: "ansible-freebsd-mysql"

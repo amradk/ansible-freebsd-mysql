@@ -1,0 +1,24 @@
+---
+- name: "Prerequisites: install pip"
+  pkgng:
+    name: "{{ mysql_pip_pkg_name[ansible_distribution] }}"
+    state: present
+  when: mysql_manage_pip == true
+
+- name: "Prerequisites: install setuptools"
+  pkgng:
+    name: "{{ mysql_setuptools_pkg_name[ansible_distribution] }}"
+    state: present
+  when: mysql_manage_pip == true
+
+- name: "Prerequisites: install virtualenv"
+  pkgng:
+    name: "{{ mysql_virtualenv_pkg_name[ansible_distribution] }}"
+    state: present
+  when: mysql_manage_pip == true
+
+- name: "Prerequisites: install pymysql"
+  pip:
+    name: "{{ mysql_pymysql_pkg_name[ansible_distribution] }}"
+    executable: "{{ mysql_pip_executable[ansible_distribution] }}"
+  when: mysql_manage_pip == true

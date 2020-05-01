@@ -1,0 +1,6 @@
+---
+- name: Start service MySQL, if not started
+  service:
+    name: "{{ mysql_service_name[ansible_distribution] }}"
+    state: started
+    enabled: yes

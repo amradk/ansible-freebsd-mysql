@@ -1,0 +1,3 @@
+# default variables value for FreeBSD
+---
+mysql_secret_file: '/root/.mysql_secret'

@@ -1,0 +1,21 @@
+---
+# manage mysql configuration
+- name: "Calculate result MySQL config"
+  set_fact:
+    mysql_result_config : "{{ mysql_def_config | combine(mysql_config, recursive=True) }}"
+- debug: 
+    var: mysql_result_config
+- debug:
+    var: mysql_def_config
+- debug:
+    var: mysql_config
+
+- name: "write mysql config"
+  template:
+    src: my.cnf.j2
+    dest: "{{ mysql_config_file }}"
+    owner: "{{ mysql_user }}"
+    group: "{{ mysql_group }}"
+    mode: '0644'
+  notify:
+     - restart mysql

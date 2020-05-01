@@ -1,0 +1,14 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+platforms:
+  - name: fbsd-mysql
+    box: freebsd/FreeBSD-12.1-STABLE
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
